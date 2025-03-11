@@ -1,11 +1,91 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Site</title>
+    <title>Controle de Estoque</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Site rodando no GitHub Pages! 🚀</h1>
+
+    <div class="container">
+        <div class="menu">
+            <button id="estoqueTab" class="active" onclick="showTab('estoque')">Estoque</button>
+            <button id="historicoTab" onclick="showTab('historico')">Histórico</button>
+            <button id="compartilhadoTab" onclick="showTab('compartilhado')">Compartilhado</button>
+        </div>
+
+        <div class="alert" id="alertMessage" style="display: none;"></div>
+
+        <!-- Tab Estoque -->
+        <div id="estoque">
+            <h2>Controle de Estoque</h2>
+            <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                <input type="text" id="productCode" placeholder="Código do Produto">
+                <input type="text" id="itemName" placeholder="Nome do Item">
+                <input type="number" id="itemQuantity" placeholder="Quantidade">
+                <input type="number" id="minQuantity" placeholder="Qtd. Mínima">
+                <input type="number" id="maxQuantity" placeholder="Qtd. Máxima">
+                <input type="text" id="responsiblePerson" placeholder="Responsável">
+                <button class="btn-add" onclick="addItem()">Adicionar</button>
+            </div>
+
+            <h3>Estoque Atual</h3>
+            <input type="text" id="filterProduct" placeholder="Filtrar por nome" oninput="filterStock()" style="max-width: 300px; margin-bottom: 20px; display: block; margin: 0 auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nome</th>
+                        <th>Quantidade</th>
+                        <th>Qtd. Mínima</th>
+                        <th>Qtd. Máxima</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="inventoryBody"></tbody>
+            </table>
+            <button class="btn-add" onclick="generateReport()">Gerar Relatório</button>
+        </div>
+
+        <!-- Tab Histórico -->
+        <div id="historico" style="display: none;">
+            <h3>Histórico de Movimentações</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Tipo</th>
+                        <th>Quantidade</th>
+                        <th>Responsável</th>
+                        <th>Data</th>
+                    </tr>
+                </thead>
+                <tbody id="historyBody"></tbody>
+            </table>
+        </div>
+
+        <!-- Tab Compartilhado -->
+        <div id="compartilhado" style="display: none;">
+            <h3>Dados Compartilhados</h3>
+            <input type="text" id="sharedDataName" placeholder="Nome do Item">
+            <input type="number" id="sharedDataQuantity" placeholder="Quantidade">
+            <button class="btn-add" onclick="shareData()">Compartilhar</button>
+            <h3>Itens Compartilhados</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Quantidade</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="sharedBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
+
