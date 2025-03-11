@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Estoque</title>   
+    <style>
+        /* Estilos gerais */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2, h3 {
+            color: #2c3e50;
+            font-size: 26px;
+            text-align: center;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        /* Menu de navegação */
+        .menu {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 20px;
+        }
+
+        .menu button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 12px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .menu button:hover {
+            background-color: #2980b9;
+        }
+
+        .menu button.active {
+            background-color: #2980b9;
+        }
+
+        /* Inputs e Botões */
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            max-width: 300px;
+            padding: 14px;
+            margin-bottom: 15px;
+            margin-right: 10px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus, input[type="number"]:focus {
+            border-color: #3498db;
+        }
+
+        button {
+            padding: 12px 24px;
+            margin: 5px 0;
+            font-size: 16px;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-add {
+            background-color: #27ae60;
+        }
+
+        .btn-entry {
+            background-color: #3498db;
+        }
+
+        .btn-exit {
+            background-color: #e74c3c;
+        }
+
+        .btn-remove {
+            background-color: #95a5a6;
+        }
+
+        .btn-edit {
+            background-color: #f39c12;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        /* Tabelas */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        th {
+            background-color: #2980b9;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        td {
+            font-size: 14px;
+            color: #2c3e50;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* Alerta */
+        .alert {
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .alert.error {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .alert.success {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            input[type="text"], input[type="number"], button {
+                width: 100%;
+            }
+
+            .menu {
+                flex-direction: column;
+            }
+
+            .menu button {
+                margin-bottom: 10px;
+                width: 100%;
+            }
+
+            table {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="menu">
+            <button id="estoqueTab" class="active" onclick="showTab('estoque')">Estoque</button>
+            <button id="historicoTab" onclick="showTab('historico')">Histórico</button>
+            <button id="compartilhadoTab" onclick="showTab('compartilhado')">Compartilhado</button>
+        </div>
+
+        <div class="alert" id="alertMessage" style="display: none;"></div>
+
+        <div id="estoque">
+            <h2>Controle de Estoque</h2>
+            <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                <input type="text" id="productCode" placeholder="Código do Produto">
+                <input type="text" id="itemName" placeholder="Nome do Item">
+                <input type="number" id="itemQuantity" placeholder="Quantidade">
+                <input type="number" id="minQuantity" placeholder="Qtd. Mínima">
+                <input type="number" id="maxQuantity" placeholder="Qtd. Máxima">
+                <input type="text" id="responsiblePerson" placeholder="Responsável">
+                <button class="btn-add" onclick="addItem()">Adicionar</button>
+            </div>
+
+            <h3>Estoque Atual</h3>
+            <input type="text" id="filterProduct" placeholder="Filtrar por nome" oninput="filterStock()" style="max-width: 300px; margin-bottom: 20px; display: block; margin: 0 auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nome</th>
+                        <th>Quantidade</th>
+                        <th>Qtd. Mínima</th>
+                        <th>Qtd. Máxima</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="inventoryBody"></tbody>
+            </table>
+            <button class="btn-add" onclick="generateReport()">Gerar Relatório</button>
+        </div>
+
+        <div id="historico" style="display: none;">
+            <h3>Histórico de Movimentações</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Tipo</th>
+                        <th>Quantidade</th>
+                        <th>Responsável</th>
+                        <th>Data</th>
+                    </tr>
+                </thead>
+                <tbody id="historyBody"></tbody>
+            </table>
+        </div>
+
+        <div id="compartilhado" style="display: none;">
+            <h3>Dados Compartilhados</h3>
+            <input type="text" id="sharedDataName" placeholder="Nome do Item">
+            <input type="number" id="sharedDataQuantity" placeholder="Quantidade">
+            <button class="btn-add" onclick="shareData()">Compartilhar</button>
+            <h3>Itens Compartilhados</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Quantidade</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="sharedBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        let inventory = JSON.parse(localStorage.getItem("inventory")) || {}; // Carrega o estoque do localStorage
+        let history = JSON.parse(localStorage.getItem("history")) || [];  // Carrega o histórico do localStorage
+        let sharedData = JSON.parse(localStorage.getItem("sharedData")) || []; // Carrega os dados compartilhados
+        let alertMessage = document.getElementById("alertMessage");
+
+        function addItem() {
+            const code = document.getElementById("productCode").value;
+            const name = document.getElementById("itemName").value;
+            const quantity = parseInt(document.getElementById("itemQuantity").value);
+            const minQuantity = parseInt(document.getElementById("minQuantity").value);
+            const maxQuantity = parseInt(document.getElementById("maxQuantity").value);
+            const responsible = document.getElementById("responsiblePerson").value;
+
+            // Verifica se todos os campos estão preenchidos
+            if (!code || !name || !quantity || !minQuantity || !maxQuantity || !responsible) {
+                showAlert("Todos os campos são obrigatórios.", true);
+                return;
+            }
+
+            // Verifica se a quantidade está correta
+            if (quantity <= 0 || minQuantity < 0 || maxQuantity <= 0 || minQuantity > maxQuantity) {
+                showAlert("As quantidades devem ser válidas.", true);
+                return;
+            }
+
+            // Adicionando ou atualizando o item no estoque
+            if (inventory[code]) {
+                inventory[code].quantity += quantity; // Adiciona à quantidade existente
+            } else {
+                inventory[code] = { name, quantity, minQuantity, maxQuantity }; // Novo item
+            }
+
+            // Adiciona ao histórico
+            addHistory(name, "Entrada", quantity, responsible);
+
+            // Salva os dados no localStorage
+            saveData();
+            updateTable();
+            clearInputFields();
+            showAlert("Produto cadastrado com sucesso!", false);
+        }
+
+        function addHistory(name, type, quantity, responsible) {
+            const date = new Date().toLocaleString();
+            history.push({ name, type, quantity, responsible, date });
+            saveData();
+            updateHistoryTable();
+        }
+
+        function saveData() {
+            localStorage.setItem("inventory", JSON.stringify(inventory));
+            localStorage.setItem("history", JSON.stringify(history));
+            localStorage.setItem("sharedData", JSON.stringify(sharedData));
+        }
+
+        function updateTable() {
+            const tableBody = document.getElementById("inventoryBody");
+            tableBody.innerHTML = "";
+            Object.keys(inventory).forEach(code => {
+                const row = document.createElement("tr");
+                row.innerHTML = `  
+                    <td>${code}</td>
+                    <td>${inventory[code].name}</td>
+                    <td>${inventory[code].quantity}</td>
+                    <td>${inventory[code].minQuantity}</td>
+                    <td>${inventory[code].maxQuantity}</td>
+                    <td>
+                        <button class="btn-entry" onclick="updateStock('${code}', 'entrada')">Entrada</button>
+                        <button class="btn-exit" onclick="updateStock('${code}', 'saida')">Saída</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function updateStock(code, type) {
+            const quantity = prompt(`Informe a quantidade de ${type === "entrada" ? "entrada" : "saída"}:`);
+            const parsedQuantity = parseInt(quantity);
+            if (isNaN(parsedQuantity) || parsedQuantity <= 0) {
+                showAlert("Quantidade inválida.", true);
+                return;
+            }
+
+            if (type === "entrada") {
+                inventory[code].quantity += parsedQuantity;
+                addHistory(inventory[code].name, "Entrada", parsedQuantity, "Admin");
+            } else if (type === "saida") {
+                if (inventory[code].quantity < parsedQuantity) {
+                    showAlert("Estoque insuficiente para a saída.", true);
+                    return;
+                }
+                inventory[code].quantity -= parsedQuantity;
+                addHistory(inventory[code].name, "Saída", parsedQuantity, "Admin");
+            }
+
+            saveData();
+            updateTable();
+        }
+
+        function filterStock() {
+            const filter = document.getElementById("filterProduct").value.toLowerCase();
+            const filteredInventory = Object.keys(inventory).filter(code => inventory[code].name.toLowerCase().includes(filter));
+            updateFilteredTable(filteredInventory);
+        }
+
+        function updateFilteredTable(filteredInventory) {
+            const tableBody = document.getElementById("inventoryBody");
+            tableBody.innerHTML = "";
+            filteredInventory.forEach(code => {
+                const row = document.createElement("tr");
+                row.innerHTML = `  
+                    <td>${code}</td>
+                    <td>${inventory[code].name}</td>
+                    <td>${inventory[code].quantity}</td>
+                    <td>${inventory[code].minQuantity}</td>
+                    <td>${inventory[code].maxQuantity}</td>
+                    <td>
+                        <button class="btn-entry" onclick="updateStock('${code}', 'entrada')">Entrada</button>
+                        <button class="btn-exit" onclick="updateStock('${code}', 'saida')">Saída</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function showAlert(message, isError) {
+            alertMessage.style.display = "block";
+            alertMessage.textContent = message;
+            alertMessage.classList.add(isError ? "error" : "success");
+        }
+
+        function generateReport() {
+            console.log("Relatório de Estoque:", inventory);
+        }
+
+        function showTab(tab) {
+            document.getElementById("estoque").style.display = "none";
+            document.getElementById("historico").style.display = "none";
+            document.getElementById("compartilhado").style.display = "none";
+            
+            document.getElementById(tab).style.display = "block";
+            
+            // Atualiza a seleção do botão
+            document.querySelectorAll('.menu button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            document.getElementById(tab + 'Tab').classList.add('active');
+        }
+
+        function updateHistoryTable() {
+            const tableBody = document.getElementById("historyBody");
+            tableBody.innerHTML = "";
+            history.forEach(record => {
+                const row = document.createElement("tr");
+                row.innerHTML = `  
+                    <td>${record.name}</td>
+                    <td>${record.type}</td>
+                    <td>${record.quantity}</td>
+                    <td>${record.responsible}</td>
+                    <td>${record.date}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function clearInputFields() {
+            document.getElementById("productCode").value = '';
+            document.getElementById("itemName").value = '';
+            document.getElementById("itemQuantity").value = '';
+            document.getElementById("minQuantity").value = '';
+            document.getElementById("maxQuantity").value = '';
+            document.getElementById("responsiblePerson").value = '';
+        }
+
+        // Inicializa a página
+        window.onload = () => {
+            showTab('estoque');
+            updateTable();
+            updateHistoryTable();
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
