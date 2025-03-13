@@ -1,178 +1,245 @@
-/* Estilos gerais */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f9f9f9;
-    margin: 0;
-    padding: 0;
-    color: #333;
+    font-family: 'Nunito', sans-serif;
+    background-color: #e9ecef; /* Mais claro e moderno */
+    color: #495057;
+    line-height: 1.6;
 }
 
 .container {
-    width: 100%;
     max-width: 1200px;
-    margin: 40px auto;
-    background-color: #ffffff;
+    margin: 30px auto;
+    background-color: #fff;
     border-radius: 12px;
     padding: 30px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
-h2, h3 {
-    color: #2c3e50;
-    font-size: 26px;
+h2 {
+    color: #343a40;
     text-align: center;
     margin-bottom: 30px;
-    text-transform: uppercase;
+    font-weight: 700;
 }
 
-/* Menu de navegação */
-.menu {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-    gap: 20px;
-}
-
-.menu button {
-    background-color: #3498db;
-    color: #fff;
-    padding: 12px 30px;
-    font-size: 16px;
+/* ===== Navigation Tabs ===== */
+.nav-tabs .nav-link {
+    color: #6c757d;
+    background-color: transparent;
     border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    text-transform: uppercase;
-}
-
-.menu button:hover {
-    background-color: #2980b9;
-}
-
-.menu button.active {
-    background-color: #2980b9;
-}
-
-/* Inputs e Botões */
-input[type="text"], input[type="number"] {
-    width: 100%;
-    max-width: 300px;
-    padding: 14px;
-    margin-bottom: 15px;
-    margin-right: 10px;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    transition: border-color 0.3s ease;
-}
-
-input[type="text"]:focus, input[type="number"]:focus {
-    border-color: #3498db;
-}
-
-button {
-    padding: 12px 24px;
-    margin: 5px 0;
-    font-size: 16px;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    padding: 10px 20px;
+    font-weight: 600;
     transition: all 0.3s ease;
 }
 
-.btn-add {
-    background-color: #27ae60;
+.nav-tabs .nav-link:hover {
+    color: #495057;
 }
 
-.btn-entry {
-    background-color: #3498db;
+.nav-tabs .nav-link.active {
+    color: #007bff; /* Cor primária do Bootstrap */
+    border-bottom-color: #007bff;
 }
 
-.btn-exit {
-    background-color: #e74c3c;
-}
-
-.btn-remove {
-    background-color: #95a5a6;
-}
-
-.btn-edit {
-    background-color: #f39c12;
-}
-
-button:hover {
-    opacity: 0.9;
-}
-
-/* Tabelas */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-th, td {
-    padding: 14px;
-    text-align: left;
-    border-bottom: 2px solid #ecf0f1;
-}
-
-th {
-    background-color: #2980b9;
-    color: #fff;
-    font-size: 16px;
-}
-
-td {
-    font-size: 14px;
-    color: #2c3e50;
-}
-
-tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-/* Alerta */
-.alert {
-    padding: 15px;
-    text-align: center;
-    font-weight: bold;
+/* ===== Forms ===== */
+.form-control, .form-select {
+    border: 1px solid #ced4da;
     border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 0.9rem;
     margin-bottom: 20px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.alert.error {
-    background-color: #e74c3c;
+.form-control:focus, .form-select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+}
+
+/* ===== Buttons ===== */
+.btn {
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #007bff; /* Cor primária do Bootstrap */
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+ .btn-secondary {
+    background-color: #6c757d; /* Cor secundária do Bootstrap */
+    border-color: #6c757d;
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+.btn-success {
+    background-color: #28a745; /* Cor de sucesso do Bootstrap */
+    border-color: #28a745;
+    color: #fff;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+.btn-danger {
+    background-color: #dc3545; /* Cor de perigo do Bootstrap */
+    border-color: #dc3545;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+.btn-outline-danger {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+/* ===== Table ===== */
+.table {
+    margin-top: 20px;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+}
+
+.table th {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.table td {
+    border: none;
+    vertical-align: middle;
+    padding: 12px 15px;
+}
+
+.table tbody tr {
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease;
+}
+
+.table tbody tr:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== Badges ===== */
+.badge-warning {
+    background-color: #ffc107; /* Cor de alerta do Bootstrap */
+    color: #212529;
+    font-weight: 500;
+}
+
+/* ===== SweetAlert2 Styling ===== */
+.swal2-popup {
+    font-size: 1rem;
+    border-radius: 10px;
+    font-family: 'Nunito', sans-serif;
+}
+
+.swal2-styled.swal2-confirm {
+    background-color: #007bff;
+}
+
+/* ===== Scrollable Container ===== */
+.scrollable-container {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+/* ===== Animation ===== */
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.slide-in-right {
+    animation: slideInRight 0.5s ease-in-out;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+/* ===== Card Styling ===== */
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.07);
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: #007bff;
     color: white;
+    font-weight: 600;
+    border-radius: 10px 10px 0 0;
+    padding: 14px;
+    text-transform: uppercase;
 }
 
-.alert.success {
-    background-color: #27ae60;
-    color: white;
+.card-body {
+    padding: 20px;
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-    .container {
-        padding: 20px;
-    }
-
-    input[type="text"], input[type="number"], button {
-        width: 100%;
-    }
-
-    .menu {
-        flex-direction: column;
-    }
-
-    .menu button {
-        margin-bottom: 10px;
-        width: 100%;
-    }
-
-    table {
-        font-size: 14px;
-    }
+  /* DataTable Styling */
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select {
+    border-radius: 4px;
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
+    transition: box-shadow 0.3s ease;
 }
 
+.dataTables_wrapper .dataTables_filter input:focus,
+.dataTables_wrapper .dataTables_length select:focus {
+    box-shadow: 0 0 5px rgba(66, 139, 202, 0.2);
+    border-color: #428bca;
+}
